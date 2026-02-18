@@ -2,7 +2,7 @@
 
 namespace Gestion.Models;
 
-public record HeroeInteligente: Heroe {
+public sealed record HeroeInteligente: Heroe {
     public required Agilidades Agilidad { get; set; }
     public enum Agilidades { Baja = 10, Media = 30, Alta = 50 }
     

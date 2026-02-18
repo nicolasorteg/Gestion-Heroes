@@ -2,7 +2,7 @@
 
 namespace Gestion.Models;
 
-public record HeroeAgil: Heroe {
+public sealed record HeroeAgil: Heroe {
     public required int Agilidad { get; set; }
     
     public override int CalcularPoder() => Energia + Nivel * HeroesConfig.MultiplicadorNivelCalcPoder + Agilidad + (int)Rareza;
