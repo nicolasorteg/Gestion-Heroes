@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Gestion.Enums;
 using Serilog;
 
 // daw's template
@@ -13,5 +14,8 @@ ReadKey();
 return;
 
 void Main() {
-    
+    WriteLine("--- 🦸 BIENVENIDO A LA EMPRESA DE HÉROES 🦸 ---");
+    WriteLine("------------------------------------------------");
+    WriteLine("----- MENÚ PRINCIPAL -----");
+    WriteLine($"{(int)OpcionesMenuPrincipal.CrearHeroe}.- Crear Héroe.");
 }
