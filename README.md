@@ -54,7 +54,7 @@ Durante una misión, los héroes realizarán acciones que influirán en el resul
 
 ## 🎯 Misiones
 
-Cada misión tendrá:
+Cada misión tendra:
 
 - Un nombre identificador.
 - Un nivel de dificultad del 1 al 10.
