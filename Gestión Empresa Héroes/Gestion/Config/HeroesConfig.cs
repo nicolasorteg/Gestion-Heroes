@@ -2,6 +2,7 @@
 
 public static class HeroesConfig {
     public const int EnergiaRestauraDescansar = 5;
+    public const int EnergiaMinima = 10;
     public const int EnergiaMaxima = 200;
     public const int MultiplicadorNivelCalcPoder = 100;
     public const int FuerzaMaxima = 50;
