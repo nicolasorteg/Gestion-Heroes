@@ -42,7 +42,7 @@ Cada héroe puede:
 - Entrenar para mejorar sus capacidades.
 - Descansar para recuperar energía.
 - Calcular su poder total según sus atributos particulares.
-- Mostrar su información actual.
+- Mostrar su información actual..
 
 Existen distintos tipos de héroes, cada uno con una habilidad especial predominante (por ejemplo, fuerza física,
 inteligencia estratégica, precisión o equilibrio general). Cada tipo calculará su poder de manera diferente y podrá
