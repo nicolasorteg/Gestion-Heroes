@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Gestion.Enums;
 using Gestion.Utils;
 using Serilog;
 
@@ -18,7 +17,5 @@ void Main() {
     WriteLine("--- 🦸 BIENVENIDO A LA EMPRESA DE HÉROES 🦸 ---");
     WriteLine("-----------------------------------------------\n");
     Utilities.ImprimirMenu();
-    
-
 }
 
