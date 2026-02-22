@@ -16,6 +16,10 @@ public class HeroeValidator: IValidator<Heroe> {
             errores.Add("La entidad proporcionada no es un Héroe.");
             return errores;
         }
+
+        // si el id es negativo
+        if (h.Id <= 0) 
+            errores.Add("El ID no puede ser negativo, debe ser autonumérico.");
         
         // si el nombre es nulo, es un espacio en blanco o tiene una longitud menor o igual a 1 caracter
         if (string.IsNullOrWhiteSpace(h.Nombre) || h.Nombre.Length < 2) 
@@ -25,11 +29,6 @@ public class HeroeValidator: IValidator<Heroe> {
         if (int.IsNegative(h.Nivel) || h.Nivel > HeroesConfig.NivelMaximo )
             errores.Add($"El nivel es obligatorio y no puede ser mayor de {HeroesConfig.NivelMaximo}.");
         
-        // si la energia es negativa o mayor a 200
-        if (int.IsNegative(h.Energia) || h.Energia > HeroesConfig.EnergiaMaxima )
-            errores.Add($"La energía es obligatoria y no puede ser mayor de {HeroesConfig.EnergiaMaxima}.");
-        
-
         // si la energia es negativa o mayor a 200
         if (int.IsNegative(h.Energia) || h.Energia > HeroesConfig.EnergiaMaxima )
             errores.Add($"La energía es obligatoria y no puede ser mayor de {HeroesConfig.EnergiaMaxima}.");
@@ -49,7 +48,24 @@ public class HeroeValidator: IValidator<Heroe> {
         if (!Enum.IsDefined(h.Rareza)) {
             errores.Add("La rareza debe ser una de las 5 posibles. (Común, Especial, Raro, Épico y Legendario)");
         }
-        
+
+        // validacion de cada uno de los campos de cada tipo de Heroe
+        switch (h) {
+            case HeroeAgil agil:
+                if (agil.Agilidad is < HeroesConfig.AgilidadMinima or > HeroesConfig.AgilidadMaxima)
+                    errores.Add($"La Agilidad debe estar entre {HeroesConfig.AgilidadMinima} y {HeroesConfig.AgilidadMaxima}.");
+                break;
+            
+            case HeroeFuerte fuerte:
+                if (fuerte.Fuerza is < HeroesConfig.FuerzaMinima or > HeroesConfig.FuerzaMaxima)
+                    errores.Add($"La Fuerza debe estar entre {HeroesConfig.FuerzaMinima} y {HeroesConfig.FuerzaMaxima}.");
+                break;
+            
+            case HeroeInteligente inteligente:
+                if (!Enum.IsDefined(inteligente.Inteligencia))
+                    errores.Add("El nivel de inteligencia no es válido.");
+                break;
+        }
         return errores;
     }
 }
