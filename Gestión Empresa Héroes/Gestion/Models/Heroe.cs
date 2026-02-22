@@ -3,7 +3,8 @@
 namespace Gestion.Models;
 
 /// <summary>
-/// 
+/// Representa a un Héroe dentro de Sistema.
+/// Al ser abstracta no puede existir ningún objeto que sea solo Heroe.
 /// </summary>
 public abstract record Heroe: IHeroe {
     public required int Id { get; init; }

@@ -2,7 +2,6 @@
 
 namespace Gestion.Exceptions;
 
-
 /// <summary>
 /// Contenedor de excepciones específicas para el programa
 /// </summary>

@@ -22,4 +22,6 @@ public abstract class Utilities {
         WriteLine($"{(int)OpcionesMenuPrincipal.AsignarHeroeAMision}.- Asignar Héroe a Misión.");
         WriteLine($"{(int)OpcionesMenuPrincipal.Salir}.- Salir");
     }
+    
+    
 }

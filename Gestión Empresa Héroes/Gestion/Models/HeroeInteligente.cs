@@ -2,6 +2,9 @@
 
 namespace Gestion.Models;
 
+/// <summary>
+/// Representa al Héroe con el campo de Inteligencia (enum).
+/// </summary>
 public sealed record HeroeInteligente: Heroe {
     public required Inteligencias Inteligencia { get; set; }
     public enum Inteligencias { Baja = 10, Media = 30, Alta = 50 }

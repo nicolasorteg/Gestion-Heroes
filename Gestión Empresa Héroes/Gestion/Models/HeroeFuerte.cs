@@ -2,6 +2,9 @@
 
 namespace Gestion.Models;
 
+/// <summary>
+/// Representa al Héroe con el campo de Fuerza.
+/// </summary>
 public sealed record HeroeFuerte: Heroe {
     public required int Fuerza { get; set; }
     

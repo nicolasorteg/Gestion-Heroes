@@ -2,6 +2,9 @@
 
 namespace Gestion.Models;
 
+/// <summary>
+/// Representa al Héroe con el campo de Agilidad.
+/// </summary>
 public sealed record HeroeAgil: Heroe {
     public required int Agilidad { get; set; }
     
