@@ -1,4 +1,4 @@
-﻿namespace Gestion.Repositories;
+﻿namespace Gestion.Repositories.Common;
 
 public interface ICrudRepository<in TKey, TEntity> where TEntity : class {
     
