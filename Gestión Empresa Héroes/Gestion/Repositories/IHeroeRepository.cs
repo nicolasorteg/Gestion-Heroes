@@ -13,4 +13,11 @@ public interface IHeroeRepository : ICrudRepository<int, Heroe> {
     /// </summary>
     /// <param name="h">Heroe a descansar</param>
     void DescansarHeroe(Heroe h);
+
+    /// <summary>
+    /// Calcula el poder de un héroe
+    /// </summary>
+    /// <param name="h">Héroe a calcular</param>
+    /// <returns>El poder</returns>
+    int CalcularPoder(Heroe h);
 }
