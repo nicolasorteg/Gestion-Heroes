@@ -1,7 +1,13 @@
-﻿using Gestion.Models;
+﻿using Gestion.Factories;
+using Gestion.Models;
 
 namespace Gestion.Repositories;
 
+/// <summary>
+/// Repositorio para la gestión de Héroes.
+/// Métodos de ordenacion delegados al servicio.
+/// Patrón Singleton para instancia única.
+/// </summary>
 public class HeroeRepository: IHeroeRepository {
 
     // singleton para instancia unica
@@ -13,21 +19,25 @@ public class HeroeRepository: IHeroeRepository {
     // listado de heroes
     private readonly List<Heroe> _heroes = [];
 
-    
+    // contador id
     private static int _idCounter;
+    private static int GetNextId() => ++_idCounter;
     
+    // constructor
     private HeroeRepository() {
         InitMiembros();
     }
-
+    
+    // llamada a factory para datos iniciales
     private void InitMiembros() {
         var miembrosIniciales = HeroeFactory.DemoHeroes();
-        foreach (var h in miembrosIniciales) Create(h);
+        foreach (var h in miembrosIniciales) {
+            _heroes.Add(h);
+            // si se encuentra un ID más grande que el contador, este se sincroniza con el mayor
+            if (h.Id > _idCounter) _idCounter = h.Id;
+        }
     }
     
-    private static int GetNextId() => ++_idCounter;
-
-
     /// <inheritdoc cref="IHeroeRepository.GetAll" />
     public IEnumerable<Heroe> GetAll() => _heroes;
     
@@ -40,7 +50,7 @@ public class HeroeRepository: IHeroeRepository {
         
         var nuevoConId = entity with { Id = GetNextId() };
         _heroes.Add(nuevoConId);
-        return entity;
+        return nuevoConId;
     }
     
     /// <inheritdoc cref="IHeroeRepository.Update" />
@@ -64,5 +74,10 @@ public class HeroeRepository: IHeroeRepository {
             _heroes.Remove(heroe);
         }
         return heroe;
+    }
+
+    /// <inheritdoc cref="IHeroeRepository.DescansarHeroe" />
+    public void DescansarHeroe(Heroe h) {
+        h.Descansar();
     }
 }
