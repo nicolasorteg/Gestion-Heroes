@@ -23,7 +23,7 @@ return;
 
 void Main() {
    
-    var service = new EmpresaService(HeroeRepository.GetInstance(), new HeroeValidator());
+    var service = new EmpresaService(HeroeRepository.GetInstance(), MisionRepository.GetInstance(), new HeroeValidator(), new MisionValidator());
     
     WriteLine("--- 🦸 BIENVENIDO A LA EMPRESA DE HÉROES 🦸 ---");
     WriteLine("-----------------------------------------------");

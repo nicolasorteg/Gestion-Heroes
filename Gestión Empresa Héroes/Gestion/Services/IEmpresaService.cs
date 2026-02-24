@@ -70,4 +70,19 @@ public interface IEmpresaService {
     /// <param name="id">Id del heroe</param>
     /// <returns>Poder</returns>
     int GetPoderHeroe(int id);
+    
+    Mision SaveMision(Mision m);
+    
+    IEnumerable<Mision> GetAllMisiones();
+    
+    IEnumerable<Mision> GetAllMisionesOrderByDificultad();
+    
+    Mision GetMisionById(int id);
+    
+    Mision UpdateMision(int id, Mision m);
+    
+    Mision DeleteMision(int id);
+    
+    void AsignarHeroeAMision(int heroeId, int misionId);
+    void SimularMision(int misionId);
 }

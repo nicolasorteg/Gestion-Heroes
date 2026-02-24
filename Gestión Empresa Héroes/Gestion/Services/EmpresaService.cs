@@ -6,7 +6,7 @@ using Gestion.Validators;
 
 namespace Gestion.Services;
 
-public class EmpresaService(IHeroeRepository heroeRepository, IValidator<Heroe> heroeValidator): IEmpresaService {
+public class EmpresaService(IHeroeRepository heroeRepository, IMisionRepository misionRepository, IValidator<Heroe> heroeValidator, IValidator<Mision> misionValidator): IEmpresaService {
     
     /// <inheritdoc cref="IEmpresaService.SaveHeroe" />
     public Heroe SaveHeroe(Heroe h) {
@@ -60,5 +60,75 @@ public class EmpresaService(IHeroeRepository heroeRepository, IValidator<Heroe> 
     public int GetPoderHeroe(int id) {
         var heroe = GetHeroeById(id);
         return heroeRepository.CalcularPoder(heroe);
+    }
+    
+    // ------------- misiones
+
+    public Mision SaveMision(Mision m) {
+        var errores = misionValidator.Validar(m);
+        if (errores.Any()) throw new HeroeExceptions.Validation(errores);
+        
+        return misionRepository.Create(m) ?? throw new HeroeExceptions.AlreadyExists(m.Id);
+    }
+    
+    public IEnumerable<Mision> GetAllMisiones() => misionRepository.GetAll();
+    
+    public IEnumerable<Mision> GetAllMisionesOrderByDificultad() => 
+        misionRepository.GetAll()
+            .OrderByDescending(m => m.Dificultad);
+    
+    public Mision GetMisionById(int id) => 
+        misionRepository.GetById(id) ?? throw new HeroeExceptions.NotFound(id);
+    
+    public Mision UpdateMision(int id, Mision m) {
+        var errores = misionValidator.Validar(m);
+        if (errores.Any()) throw new HeroeExceptions.Validation(errores);
+        
+        return misionRepository.Update(id, m) ?? throw new HeroeExceptions.NotFound(id);
+    }
+    
+    public Mision DeleteMision(int id) => 
+        misionRepository.Delete(id) ?? throw new HeroeExceptions.NotFound(id);
+    
+    public void AsignarHeroeAMision(int heroeId, int misionId) {
+        var heroe = GetHeroeById(heroeId); 
+        var mision = GetMisionById(misionId);
+        
+        mision.AñadirHeroe(heroe);
+        
+        misionRepository.Update(misionId, mision);
+    }
+    
+    public void SimularMision(int misionId) {
+        var mision = GetMisionById(misionId);
+        
+        // breve validacion
+        if (mision.Estado == Mision.Estados.Completada) { WriteLine("⚠️ La misión ya ha sido completada."); return; }
+        if (!mision.Lineas.Any()) { WriteLine("❌ No hay héroes asignados a la misión."); return; }
+        
+        // calculo poder equipo
+        var poderEquipo = mision.Lineas.Sum(l => l.Heroe.CalcularPoder());
+        
+        var umbralExito = mision.Dificultad * 50; 
+        
+        WriteLine($"⚔️ Simulación: {mision.Nombre}");
+        WriteLine($"📊 Poder Equipo: {poderEquipo} | Dificultad Requerida: {umbralExito}");
+
+        if (poderEquipo >= umbralExito) {
+            WriteLine("✅ ¡ÉXITO TOTAL!");
+            mision.Estado = Mision.Estados.Completada;
+
+            foreach (var h in mision.Lineas.Select(linea => linea.Heroe)) {
+                h.SumarExperiencia(HeroesConfig.XpGanadaMision);
+                heroeRepository.Update(h.Id, h);
+            }
+        }
+        else {
+            WriteLine("❌ ¡FRACASO! Los héroes regresan heridos y cansados.");
+            foreach (var h in mision.Lineas.Select(linea => linea.Heroe)) {
+                h.Energia -= HeroesConfig.EnergiaPerdidaMision;
+                heroeRepository.Update(h.Id, h);
+            }
+        }
     }
 }

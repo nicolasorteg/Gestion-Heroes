@@ -47,9 +47,16 @@ public class MisionRepository: IMisionRepository {
     public Mision? Create(Mision entity) {
         if (GetById(entity.Id) != null) return null;
 
-        var nuevoConId = entity with { Id = GetNextId() };
-        _misiones.Add(nuevoConId);
-        return nuevoConId;
+        var nueva = new Mision {
+            Id = GetNextId(),
+            Nombre = entity.Nombre,
+            Dificultad = entity.Dificultad,
+            Estado = entity.Estado,
+            Lineas = new List<LineaMision>(entity.Lineas) 
+        };
+        
+        _misiones.Add(nueva);
+        return nueva;
     }
     
     /// <inheritdoc cref="IMisionRepository.Update" />

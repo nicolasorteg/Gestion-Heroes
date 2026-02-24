@@ -37,4 +37,7 @@ public static class HeroesConfig {
     public static int[] UmbralesNivel = [10, 25, 50, 100, 150, 225, 325, 450, 600, 800, 0];
     public static int[] ValoresRealesRarezas = [100, 200, 300, 400, 500];
     public static int[] ValoresRealesInteligencias = [10, 30, 50];
+
+    public const int XpGanadaMision = 100;
+    public const int EnergiaPerdidaMision = 25;
 }
