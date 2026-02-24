@@ -12,7 +12,6 @@ public class HeroeRepository : IHeroeRepository {
 
     // singleton para instancia unica
     private static HeroeRepository? _instance;
-
     public static HeroeRepository GetInstance() {
         return _instance ??= new HeroeRepository();
     }

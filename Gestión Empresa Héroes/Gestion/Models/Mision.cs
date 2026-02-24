@@ -6,7 +6,7 @@ namespace Gestion.Models;
 /// Representa a una Misión dentro del Sistema.
 /// En vez de lista de heroes tiene lista de LineaMision (esta almacena al heroe).
 /// </summary>
-public class Mision {
+public record Mision {
     public required int Id { get; init; }
     public required string Nombre { get; set; }
     public int Dificultad { get; set; } 
