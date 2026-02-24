@@ -16,10 +16,6 @@ public class HeroeValidator: IValidator<Heroe> {
             errores.Add("La entidad proporcionada no es un Héroe.");
             return errores;
         }
-
-        // si el id es negativo
-        if (h.Id <= 0) 
-            errores.Add("El ID no puede ser negativo, debe ser autonumérico.");
         
         // si el nombre es nulo, es un espacio en blanco o tiene una longitud menor o igual a 1 caracter
         if (string.IsNullOrWhiteSpace(h.Nombre) || h.Nombre.Length < 2) 

@@ -7,7 +7,7 @@ namespace Gestion.Models;
 /// Al ser abstracta no puede existir ningún objeto que sea solo Heroe.
 /// </summary>
 public abstract record Heroe: IHeroe {
-    public required int Id { get; init; }
+    public int Id { get; init; }
     public required string Nombre { get; set; }
     public required int Nivel { get; set; }
     public required int Energia { get; set; }
@@ -52,5 +52,5 @@ public abstract record Heroe: IHeroe {
     }
 
     public override string ToString() => 
-        $"{Id:D2} |  Nombre: {Nombre}  |  Nivel: {Nivel}  |  Energía: {Energia}  |  Experiencia:  {Experiencia}";
+        $"{Id:D2} |  Nombre: {Nombre}  |  Nivel: {Nivel}  |  Energía: {Energia}  |  Experiencia: {Experiencia}  | Rareza: {Rareza}";
 }

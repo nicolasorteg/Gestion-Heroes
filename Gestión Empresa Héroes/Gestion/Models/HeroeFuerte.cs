@@ -6,7 +6,7 @@ namespace Gestion.Models;
 /// Representa al Héroe con el campo de Fuerza.
 /// </summary>
 public sealed record HeroeFuerte: Heroe {
-    public required int Fuerza { get; set; }
+    public required int Fuerza { get; init; }
     
     public override int CalcularPoder() => Energia + Nivel * HeroesConfig.MultiplicadorNivelCalcPoder + Fuerza + (int)Rareza;
     

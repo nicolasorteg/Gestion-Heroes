@@ -6,7 +6,7 @@ namespace Gestion.Models;
 /// Representa al Héroe con el campo de Agilidad.
 /// </summary>
 public sealed record HeroeAgil: Heroe {
-    public required int Agilidad { get; set; }
+    public required int Agilidad { get; init; }
     
     public override int CalcularPoder() => Energia + Nivel * HeroesConfig.MultiplicadorNivelCalcPoder + Agilidad + (int)Rareza;
 

@@ -6,7 +6,7 @@ namespace Gestion.Models;
 /// Representa al Héroe con el campo de Inteligencia (enum).
 /// </summary>
 public sealed record HeroeInteligente: Heroe {
-    public required Inteligencias Inteligencia { get; set; }
+    public required Inteligencias Inteligencia { get; init; }
     public enum Inteligencias { Baja = 10, Media = 30, Alta = 50 }
     
     public override int CalcularPoder() => Energia + Nivel * HeroesConfig.MultiplicadorNivelCalcPoder + (int)Inteligencia + (int)Rareza;

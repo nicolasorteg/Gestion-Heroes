@@ -32,4 +32,13 @@ public abstract class Utilities {
         WriteLine($"{(int)OpcionObtenerHeroes.Salir}.- Salir");
     }
     
+    public static void ImprimirMenuActualizarHeroes() {
+        WriteLine("----- DATO A ACTUALIZAR -----");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Nombre}.- Nombre.");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Nivel}.- Nivel.");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Energia}.- Energia.");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Experiencia}.- Experiencia");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Rareza}.- Rareza");
+        WriteLine($"{(int)OpcionMenuActualizarHeroe.Salir}.- Salir");
+    }
 }

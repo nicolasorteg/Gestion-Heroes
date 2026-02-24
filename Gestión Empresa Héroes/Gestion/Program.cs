@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Gestion.Config;
 using Gestion.Enums;
 using Gestion.Exceptions;
+using Gestion.Models;
 using Gestion.Repositories;
 using Gestion.Services;
 using Gestion.Utils;
@@ -76,7 +77,40 @@ void Main() {
 
 // ----------- opciones
 void CrearHeroe(EmpresaService service) {
-    throw new NotImplementedException();
+    var nombre = ValidarDato("- Nombre -> ", HeroesConfig.RegexNombre);
+    var nivel = int.Parse(ValidarDato("- Nivel -> ", HeroesConfig.RegexNivel));
+    var energia = int.Parse(ValidarDato("- Energía -> ", HeroesConfig.RegexEnergia));
+    var xp = int.Parse(ValidarDato("- XP -> ", HeroesConfig.RegexXp));
+    
+    WriteLine("0:Común, 1:Especial, 2:Raro, 3:Épico, 4:Legendario");
+    var rarezaInput = int.Parse(ValidarDato("- Rareza (0-4) -> ", HeroesConfig.RegexRarezas));
+    
+    WriteLine("Selecciona el tipo: 1. Fuerte | 2. Ágil | 3. Inteligente");
+    var tipoHeroe = int.Parse(ValidarDato("- Tipo de Héroe", HeroesConfig.RegexTipoHeroe));
+    
+    Heroe nuevoHeroe;
+
+    switch (tipoHeroe) {
+        case 1:
+            var agilidad = int.Parse(ValidarDato("- Agilidad -> ", HeroesConfig.RegexAgilidadFuerza));
+            nuevoHeroe = new HeroeAgil { Nombre = nombre, Nivel = nivel, Energia = energia, Experiencia = xp, Rareza = (Heroe.Rarezas)HeroesConfig.ValoresRealesRarezas[rarezaInput], Agilidad = agilidad };
+            break;
+        case 2:
+            var fuerza = int.Parse(ValidarDato("- Fuerza -> ", HeroesConfig.RegexAgilidadFuerza));
+            nuevoHeroe = new HeroeFuerte { Nombre = nombre, Nivel = nivel, Energia = energia, Experiencia = xp, Rareza = (Heroe.Rarezas)HeroesConfig.ValoresRealesRarezas[rarezaInput], Fuerza = fuerza };
+            break;
+        default:
+            WriteLine("Niveles: 0:Baja, 1:Media, 2:Alta");
+            var inteligencia = int.Parse(ValidarDato("- Inteligencia -> ", HeroesConfig.RegexInteligencia));
+            nuevoHeroe = new HeroeInteligente { Nombre = nombre, Nivel = nivel, Energia = energia, Experiencia = xp, Rareza = (Heroe.Rarezas)HeroesConfig.ValoresRealesRarezas[rarezaInput], Inteligencia = (HeroeInteligente.Inteligencias)HeroesConfig.ValoresRealesInteligencias[inteligencia] };
+            break;
+    }
+    WriteLine(nuevoHeroe);
+    var confirmacionIn = ValidarDato(HeroesConfig.MensajeConfirmacion, HeroesConfig.RegexConfirmacion).ToLower();
+    if (confirmacionIn == "n") return;
+    
+    var creado = service.SaveHeroe(nuevoHeroe);
+    WriteLine($"\n✅  Héroe {creado.Nombre} creado con éxito. ID: {creado.Id}");
 }
 
 void ObtenerHeroes(EmpresaService service) {
@@ -110,7 +144,50 @@ void BuscarHeroePorId(EmpresaService service) {
 
 void ActualizarHeroe(EmpresaService service) {
     var id = int.Parse(ValidarDato("- ID del Héroe a actualizar: ", HeroesConfig.RegexId));
-    var actual = service.GetHeroeById(id);
+    var h = service.GetHeroeById(id);
+    Heroe nuevoHeroe;
+    WriteLine(h);
+    Utilities.ImprimirMenuActualizarHeroes();
+    var opcion = (OpcionMenuActualizarHeroe)int.Parse(ValidarDato("- Opción elegida -> ", HeroesConfig.RegexOpcionMenuActualizarHeroe));
+    switch (opcion) {
+        case OpcionMenuActualizarHeroe.Salir: return;
+        case OpcionMenuActualizarHeroe.Nombre:
+            nuevoHeroe = h with { Nombre = ValidarDato("- Nombre -> ", HeroesConfig.RegexNombre) };
+            break;
+        
+        case OpcionMenuActualizarHeroe.Nivel:
+            nuevoHeroe = h with { Nivel = int.Parse(ValidarDato("- Nivel -> ", HeroesConfig.RegexNivel)) };
+            break;
+        
+        case OpcionMenuActualizarHeroe.Energia:
+            nuevoHeroe = h with { Energia = int.Parse(ValidarDato("- Energía -> ", HeroesConfig.RegexEnergia)) };
+            break;
+        
+        case OpcionMenuActualizarHeroe.Experiencia:
+            var xp = int.Parse(ValidarDato("- XP -> ", HeroesConfig.RegexXp));
+            if (h.Nivel < HeroesConfig.UmbralesNivel.Length && xp >= HeroesConfig.UmbralesNivel[h.Nivel]) {
+                WriteLine($"⚠️ Error: La XP no puede ser mayor o igual a {HeroesConfig.UmbralesNivel[h.Nivel]} para el nivel {h.Nivel}.");
+                return;
+            }
+            nuevoHeroe = h with { Experiencia = xp };
+            break;
+        
+        case OpcionMenuActualizarHeroe.Rareza:
+            WriteLine("0:Común, 1:Especial, 2:Raro, 3:Épico, 4:Legendario");
+            var rarezaInput = int.Parse(ValidarDato("- Nueva Rareza (0-4) -> ", HeroesConfig.RegexRarezas));
+            nuevoHeroe = h with { Rareza = (Heroe.Rarezas)HeroesConfig.ValoresRealesRarezas[rarezaInput] };
+            break;
+        
+        default: // si se entra aquí ha fallado la validacion de la opcion
+            WriteLine($"⚠️ Opción inválida. Introduzca una de las {(int)OpcionObtenerHeroes.ObtenerPorPoder} opciones posibles.");
+            return;
+    }
+    WriteLine(nuevoHeroe);
+    var confirmacion5 = ValidarDato(HeroesConfig.MensajeConfirmacion, HeroesConfig.RegexConfirmacion).ToLower();
+    if (confirmacion5 == "n") return;
+    
+    service.UpdateHeroe(id, nuevoHeroe);
+    WriteLine("✅  Héroe actualizado.");
 }
 
 void BorrarHeroe(EmpresaService service) {
@@ -120,19 +197,15 @@ void BorrarHeroe(EmpresaService service) {
 }
 
 void DescansarHeroe(EmpresaService service) {
-    var id = int.Parse(ValidarDato("- ID del Héroe para descansar: ", HeroesConfig.RegexId));
+    var id = int.Parse(ValidarDato("- ID del Héroe: ", HeroesConfig.RegexId));
     service.DescansarHeroe(id);
 }
 
-
-
 void CalcularPoder(EmpresaService service) {
-    var id = int.Parse(ValidarDato("- ID del Héroe para descansar: ", HeroesConfig.RegexId));
+    var id = int.Parse(ValidarDato("- ID del Héroe: ", HeroesConfig.RegexId));
     var poder = service.GetPoderHeroe(id);
     WriteLine($"🧨 Poder Cálculado -> {poder}");
 }
-
-
 
 
 

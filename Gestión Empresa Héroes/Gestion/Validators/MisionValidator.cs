@@ -16,10 +16,6 @@ public class MisionValidator: IValidator<Mision> {
             errores.Add("La entidad proporcionada no es una Misión.");
             return errores;
         }
-
-        // si el id es negativo
-        if (m.Id <= 0) 
-            errores.Add("El ID no puede ser negativo, debe ser autonumérico.");
         
         // si el nombre es nulo, es un espacio en blanco o tiene una longitud menor o igual a 1 caracter
         if (string.IsNullOrWhiteSpace(m.Nombre) || m.Nombre.Length < 2) 
