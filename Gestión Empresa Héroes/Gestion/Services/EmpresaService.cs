@@ -39,13 +39,13 @@ public class EmpresaService(IHeroeRepository heroeRepository, IValidator<Heroe> 
     public IEnumerable<Heroe> GetAllOrderByLevel() => 
         heroeRepository.GetAll()
             .OrderByDescending(h => h.Nivel)
-            .ThenBy(h => h.Experiencia);
+            .ThenByDescending(h => h.Experiencia);
     
     /// <inheritdoc cref="IEmpresaService.GetAllOrderByPower" />
     public IEnumerable<Heroe> GetAllOrderByPower() =>
         heroeRepository.GetAll()
             .OrderByDescending(h => h.CalcularPoder())
-            .ThenBy(h => h.Nivel);
+            .ThenByDescending(h => h.Nivel);
 
     /// <inheritdoc cref="IEmpresaService.DescansarHeroe" />
     public void DescansarHeroe(int id) {

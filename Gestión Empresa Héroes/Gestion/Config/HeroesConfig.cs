@@ -1,4 +1,6 @@
-﻿namespace Gestion.Config;
+﻿using Gestion.Enums;
+
+namespace Gestion.Config;
 
 public static class HeroesConfig {
     public const int EnergiaRestauraDescansar = 5;
@@ -17,5 +19,9 @@ public static class HeroesConfig {
     public const int AgilidadMinima = 1;
     public const int AgilidadMaxima = 50;
     
+    public static readonly string RegexOpcionMenuPrincipal = @$"^[?:{(int)OpcionesMenuPrincipal.Salir}-{(int)OpcionesMenuPrincipal.ActualizarMision}]|1[0-3]$";
+    public static readonly string RegexOpcionMenuOrdenacion = @$"^[?:{(int)OpcionObtenerHeroes.Salir}-{(int)OpcionObtenerHeroes.ObtenerPorPoder}]$";
+    public const string RegexId = @"^\d{1,}$";
+
     public static int[] UmbralesNivel = [10, 25, 50, 100, 150, 225, 325, 450, 600, 800, 0];
 }

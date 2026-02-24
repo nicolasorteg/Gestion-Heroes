@@ -12,7 +12,7 @@ public class HeroeExceptions(string message) : DomainException(message) {
     /// Se lanza cuando no existe el ID ingresado.
     /// </summary>
     /// <param name="id">Identificador único</param>
-    public sealed class NotFound(int id) : HeroeExceptions($"❌ No se ha encontrado ningún elemento con ID: {id}");
+    public sealed class NotFound(int id) : HeroeExceptions($"❌  No se ha encontrado ningún elemento con ID: {id}");
 
     /// <summary>
     /// Se lanza cuando existe un error en la validación.

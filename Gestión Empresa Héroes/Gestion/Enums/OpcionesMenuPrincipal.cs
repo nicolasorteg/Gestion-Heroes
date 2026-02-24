@@ -14,5 +14,6 @@ public enum OpcionesMenuPrincipal {
     BorrarMision,
     SimularMision,
     DescansarHeroe,
+    CalcularPoderHeroe,
     AsignarHeroeAMision
 }

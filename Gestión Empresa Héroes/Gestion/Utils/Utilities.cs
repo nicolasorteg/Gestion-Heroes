@@ -4,7 +4,7 @@ namespace Gestion.Utils;
 
 public abstract class Utilities {
     public static void ImprimirMenu() {
-        WriteLine("----- MENÚ PRINCIPAL -----");
+        WriteLine("\n----- MENÚ PRINCIPAL -----");
         WriteLine($"{(int)OpcionesMenuPrincipal.CrearHeroe}.- Crear Héroe.");
         WriteLine($"{(int)OpcionesMenuPrincipal.ObtenerHeroes}.- Obtener Héroes.");
         WriteLine($"{(int)OpcionesMenuPrincipal.BuscarHeroePorId}.- Buscar Héroe por ID.");
@@ -19,9 +19,17 @@ public abstract class Utilities {
         WriteLine("--------------------------");
         WriteLine($"{(int)OpcionesMenuPrincipal.SimularMision}.- Simular Misión.");
         WriteLine($"{(int)OpcionesMenuPrincipal.DescansarHeroe}.- Descansar Héroe.");
+        WriteLine($"{(int)OpcionesMenuPrincipal.CalcularPoderHeroe}.- Calcular Poder Héroe.");
         WriteLine($"{(int)OpcionesMenuPrincipal.AsignarHeroeAMision}.- Asignar Héroe a Misión.");
         WriteLine($"{(int)OpcionesMenuPrincipal.Salir}.- Salir");
     }
-    
+
+    public static void ImprimirMenuObtenerHeroes() {
+        WriteLine("----- TIPO DE ORDENACIÓN -----");
+        WriteLine($"{(int)OpcionObtenerHeroes.ObtenerPorId}.- Obtener Todos.");
+        WriteLine($"{(int)OpcionObtenerHeroes.ObtenerPorNivel}.- Obtener Todos ordenador por Nivel.");
+        WriteLine($"{(int)OpcionObtenerHeroes.ObtenerPorPoder}.- Obtener Todos ordenador por Poder.");
+        WriteLine($"{(int)OpcionObtenerHeroes.Salir}.- Salir");
+    }
     
 }
