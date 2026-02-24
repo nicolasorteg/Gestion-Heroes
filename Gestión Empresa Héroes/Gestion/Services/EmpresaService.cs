@@ -77,6 +77,10 @@ public class EmpresaService(IHeroeRepository heroeRepository, IMisionRepository 
         misionRepository.GetAll()
             .OrderByDescending(m => m.Dificultad);
     
+    public IEnumerable<Mision> GetMisionesPendientes() => 
+        misionRepository.GetAll()
+            .Where(m => m.Estado == Mision.Estados.Pendiente);
+    
     public Mision GetMisionById(int id) => 
         misionRepository.GetById(id) ?? throw new HeroeExceptions.NotFound(id);
     

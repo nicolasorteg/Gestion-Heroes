@@ -40,15 +40,15 @@ void Main() {
                 case OpcionesMenuPrincipal.BuscarHeroePorId: BuscarHeroePorId(service); break;
                 case OpcionesMenuPrincipal.ActualizarHeroe: ActualizarHeroe(service);break;
                 case OpcionesMenuPrincipal.BorrarHeroe: BorrarHeroe(service); break;
-                //case OpcionesMenuPrincipal.CrearMision: CrearMision(service); break;
-                //case OpcionesMenuPrincipal.ObtenerMision: ObtenerMision(service); break;
-                //case OpcionesMenuPrincipal.BuscarMisionPorId: BuscarMisionPorId(service); break;
-                //case OpcionesMenuPrincipal.ActualizarMision: ActualizarMision(service); break;
-                //case OpcionesMenuPrincipal.BorrarMision: BorrarMision(service); break;
-                //case OpcionesMenuPrincipal.SimularMision: SimularMision(service); break;
+                case OpcionesMenuPrincipal.CrearMision: CrearMision(service); break;
+                case OpcionesMenuPrincipal.ObtenerMision: ObtenerMisiones(service); break;
+                case OpcionesMenuPrincipal.BuscarMisionPorId: BuscarMisionPorId(service); break;
+                case OpcionesMenuPrincipal.ActualizarMision: ActualizarMision(service); break;
+                case OpcionesMenuPrincipal.BorrarMision: BorrarMision(service); break;
+                case OpcionesMenuPrincipal.SimularMision: SimularMision(service); break;
                 case OpcionesMenuPrincipal.DescansarHeroe: DescansarHeroe(service);break;
                 case OpcionesMenuPrincipal.CalcularPoderHeroe: CalcularPoder(service); break;
-                //case OpcionesMenuPrincipal.AsignarHeroeAMision: AsignarHeroeAMision(service); break;
+                case OpcionesMenuPrincipal.AsignarHeroeAMision: AsignarHeroeAMision(service); break;
                 default: // si se entra aquí ha fallado la validacion de la opcion
                     WriteLine($"⚠️ Opción inválida. Introduzca una de las {(int)OpcionesMenuPrincipal.AsignarHeroeAMision} opciones posibles.");
                     break;
@@ -207,6 +207,97 @@ void CalcularPoder(EmpresaService service) {
     WriteLine($"🧨 Poder Cálculado -> {poder}");
 }
 
+
+void CrearMision(EmpresaService service) {
+    var nombre = ValidarDato("- Nombre de la Misión -> ", HeroesConfig.RegexNombre);
+    var dificultad = int.Parse(ValidarDato("- Dificultad (1-10) -> ", @"^([1-9]|10)$"));
+    
+    var nuevaMision = new Mision { 
+        Nombre = nombre, 
+        Dificultad = dificultad, 
+        Estado = Mision.Estados.Pendiente 
+    };
+
+    WriteLine($"\n📋 Previsualización: {nuevaMision.Nombre} (Dif: {nuevaMision.Dificultad})");
+    var confirmacion = ValidarDato(HeroesConfig.MensajeConfirmacion, HeroesConfig.RegexConfirmacion).ToLower();
+    if (confirmacion == "n") return;
+
+    var creada = service.SaveMision(nuevaMision);
+    WriteLine($"\n✅ Misión {creada.Nombre} creada con éxito. ID: {creada.Id}");
+}
+
+
+void ObtenerMisiones(EmpresaService service) {
+    WriteLine("\n--- 📜 LISTADO DE MISIONES ---");
+    var misiones = service.GetAllMisionesOrderByDificultad();
+    foreach (var m in misiones) {
+        WriteLine(m);
+    }
+}
+
+void BuscarMisionPorId(EmpresaService service) {
+    var id = int.Parse(ValidarDato("- ID de la Misión: ", HeroesConfig.RegexId));
+    var m = service.GetMisionById(id);
+    WriteLine($"🔎✅ Misión encontrada:\n-----------------------\n");
+    WriteLine(m);
+}
+
+void ActualizarMision(EmpresaService service) {
+    var id = int.Parse(ValidarDato("- ID de la Misión a actualizar: ", HeroesConfig.RegexId));
+    var m = service.GetMisionById(id);
+    
+    var nuevaMision = new Mision {
+        Id = m.Id,
+        Nombre = m.Nombre,
+        Dificultad = m.Dificultad,
+        Estado = m.Estado,
+        Lineas = m.Lineas 
+    };
+    
+    WriteLine($"Actualizando: {m.Nombre}");
+    WriteLine("1: Nombre, 2: Dificultad, 3: Estado (0 para salir)");
+    var opcionInput = int.Parse(ValidarDato("- Opción -> ", @"^[0-3]$")); // regex temporal aqui
+    var opcion = (OpcionMenuActualizarMision)opcionInput;
+
+    if (opcion == OpcionMenuActualizarMision.Salir) return;
+
+    switch (opcion) {
+        case OpcionMenuActualizarMision.Nombre:
+            nuevaMision.Nombre = ValidarDato("- Nuevo Nombre -> ", HeroesConfig.RegexNombre);
+            break;
+        case OpcionMenuActualizarMision.Dificultad:
+            nuevaMision.Dificultad = int.Parse(ValidarDato("- Nueva Dificultad -> ", @"^([1-9]|10)$"));
+            break;
+        case OpcionMenuActualizarMision.Estado:
+            WriteLine("0: Pendiente, 1: Completada");
+            var st = int.Parse(ValidarDato("- Nuevo Estado -> ", @"^[0-1]$"));
+            nuevaMision.Estado = (Mision.Estados)st;
+            break;
+    }
+
+    service.UpdateMision(id, nuevaMision);
+    WriteLine("✅ Misión actualizada con éxito.");
+}
+
+void BorrarMision(EmpresaService service) {
+    var id = int.Parse(ValidarDato("- ID de la Misión a borrar: ", HeroesConfig.RegexId));
+    var borrada = service.DeleteMision(id);
+    WriteLine($"\n🗑️ Misión {borrada.Nombre} eliminada correctamente.");
+}
+
+void AsignarHeroeAMision(EmpresaService service) {
+    WriteLine("\n--- 🛡️ ASIGNAR HÉROE A MISIÓN ---");
+    var heroeId = int.Parse(ValidarDato("- ID del Héroe: ", HeroesConfig.RegexId));
+    var misionId = int.Parse(ValidarDato("- ID de la Misión: ", HeroesConfig.RegexId));
+    
+    service.AsignarHeroeAMision(heroeId, misionId);
+}
+
+void SimularMision(EmpresaService service) {
+    WriteLine("\n--- ⚔️ INICIAR SIMULACIÓN ---");
+    var id = int.Parse(ValidarDato("- ID de la Misión a simular: ", HeroesConfig.RegexId));
+    service.SimularMision(id);
+}
 
 
 string ValidarDato(string msg, string rgx) {

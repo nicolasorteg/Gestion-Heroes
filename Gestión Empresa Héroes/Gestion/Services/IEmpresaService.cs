@@ -76,6 +76,8 @@ public interface IEmpresaService {
     IEnumerable<Mision> GetAllMisiones();
     
     IEnumerable<Mision> GetAllMisionesOrderByDificultad();
+
+    IEnumerable<Mision> GetMisionesPendientes();
     
     Mision GetMisionById(int id);
     

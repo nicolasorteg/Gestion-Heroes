@@ -7,7 +7,7 @@ namespace Gestion.Models;
 /// En vez de lista de heroes tiene lista de LineaMision (esta almacena al heroe).
 /// </summary>
 public class Mision {
-    public required int Id { get; init; }
+    public int Id { get; init; }
     public required string Nombre { get; set; }
     public int Dificultad { get; set; } 
     public Estados Estado { get; set; } 
@@ -30,5 +30,10 @@ public class Mision {
 
         Lineas.Add(new LineaMision { Heroe = h });
         WriteLine($"✅ {h.Nombre} se ha unido a la misión {Nombre}.");
+    }
+    
+    public override string ToString() {
+        var heroesAsignados = Lineas.Count;
+        return $"{Id:D2} | Misión: {Nombre} | Dificultad: {Dificultad} | Estado: {Estado} | Equipo: {heroesAsignados} héroes";
     }
 }
