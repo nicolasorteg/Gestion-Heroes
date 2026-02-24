@@ -57,4 +57,17 @@ public interface IEmpresaService {
     /// </summary>
     /// <returns>Héroes ordenados</returns>
     IEnumerable<Heroe> GetAllOrderByPower();
+
+    /// <summary>
+    /// Manda a la cama a un heroe para restaurar X su energía
+    /// </summary>
+    /// <param name="id">ID del heroe a descansar</param>
+    void DescansarHeroe(int id);
+
+    /// <summary>
+    /// Calcula el poder de un Héroe
+    /// </summary>
+    /// <param name="id">Id del heroe</param>
+    /// <returns>Poder</returns>
+    int GetPoderHeroe(int id);
 }
